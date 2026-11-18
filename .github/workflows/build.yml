@@ -1,0 +1,20 @@
+name: 出包
+on:
+  workflow_dispatch:
+    inputs:
+      u:
+        default: ''
+jobs:
+  b:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - run: for z in *.zip; do [ -f "$z" ] && unzip -qo "$z"; done
+      - run: bash build.sh "${{ inputs.u }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: out
+          path: |
+            reimpl/libLCZMenu.dylib
+            LCZMenu-patched.ipa
+          if-no-files-found: warn
